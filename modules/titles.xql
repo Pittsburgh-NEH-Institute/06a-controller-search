@@ -37,12 +37,21 @@ This demonstration project contains three declarations for $articles. Only one i
 so comment out the other two.
 ==========:)
 declare variable $articles-coll := collection($path-to-data || '/hoax_xml');
-(: The first version, with no predicate, finds all articles:)
-declare variable $articles as element(tei:TEI)+ := $articles-coll/tei:TEI;
-(: The second version keeps articles with text that contains $term (case-sensitive). :)
-(: declare variable $articles as element(tei:TEI)+ := $articles-coll/tei:TEI[contains(., $term)]; :)
-(: The third version keeps articles with text that contains $term (case-insensitive). :)
-(: declare variable $articles as element(tei:TEI)+ := $articles-coll/tei:TEI[matches(., $term, 'i')]; :)
+(: 
+    The first version, with no predicate, finds all articles
+:)
+(: declare variable $articles as element(tei:TEI)+ := $articles-coll/tei:TEI; :)
+(: 
+    The second version keeps articles with text that contains $term (case-sensitive). 
+    We change the repetition indicator on $articles because there could be no matches.
+:)
+declare variable $articles as element(tei:TEI)* := $articles-coll/tei:TEI[contains(., $term)];
+(: 
+    The third version keeps articles with text that contains $term (case-insensitive).
+    If there is no specified term, matches() needs an empty string, as its second argument! 
+:)
+declare variable $regex-term as xs:string := if ($term) then $term else '';
+(: declare variable $articles as element(tei:TEI)* := $articles-coll/tei:TEI[matches(., $regex-term, 'i')]; :)
 
 <m:titles>{
     for $article in $articles 
