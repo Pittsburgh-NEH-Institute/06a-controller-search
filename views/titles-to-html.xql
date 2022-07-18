@@ -22,14 +22,19 @@ declare variable $data as document-node() := request:get-data();
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Article titles</title>
+        <style>
+            input {{
+                margin-right: 1em;
+            }}
+        </style>
     </head>
     <body>
         <h1>Article titles</h1>
         
         <form action="titles" method="get">
-            <input id="term" name="term" placeholder="[Search term]"/>
+            <input id="term" name="term" placeholder="[Search term]" value="{request:get-parameter('term','')}"/>
             <input id="submit" type="submit" value="Submit"/>
-            <input id="clear-form" type="reset"/>
+            <button id="clear-form" onclick="document.getElementById('term').value='';">Reset</button>
         </form>
 
         {if ($data//descendant::m:title)
