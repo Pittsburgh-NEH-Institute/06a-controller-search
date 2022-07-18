@@ -45,13 +45,13 @@ declare variable $articles-coll := collection($path-to-data || '/hoax_xml');
     The second version keeps articles with text that contains $term (case-sensitive). 
     We change the repetition indicator on $articles because there could be no matches.
 :)
-declare variable $articles as element(tei:TEI)* := $articles-coll/tei:TEI[contains(., $term)];
+(: declare variable $articles as element(tei:TEI)* := $articles-coll/tei:TEI[contains(., $term)]; :)
 (: 
     The third version keeps articles with text that contains $term (case-insensitive).
     If there is no specified term, matches() needs an empty string, as its second argument! 
 :)
 declare variable $regex-term as xs:string := if ($term) then $term else '';
-(: declare variable $articles as element(tei:TEI)* := $articles-coll/tei:TEI[matches(., $regex-term, 'i')]; :)
+declare variable $articles as element(tei:TEI)* := $articles-coll/tei:TEI[matches(., $regex-term, 'i')];
 
 <m:titles>{
     for $article in $articles 
